@@ -3,8 +3,7 @@
 "
 " Maintainer:	Bram Moolenaar <Bram@vim.org>
 " Last change:	2008 Dec 17
-"
-" To use it, copy it to
+" " To use it, copy it to
 "     for Unix and OS/2:  ~/.vimrc
 "	      for Amiga:  s:.vimrc
 "  for MS-DOS and Win32:  $VIM\_vimrc
@@ -19,6 +18,30 @@ endif
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
+" Vundle configuration
+filetype off  " required!
+
+set rtp+=~/.vim/vundle.git/ 
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+Bundle 'tpope/vim-fugitive'
+Bundle 'msanders/snipmate.vim'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'mileszs/ack.vim'
+Bundle 'scrooloose/nerdtree'
+Bundle 'geetarista/ego.vim'
+
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+Bundle 'xoria256.vim'
+Bundle 'guicolorscheme.vim'
+Bundle 'desert256.vim'
+Bundle 'xterm16.vim'
+" Bundle 'Command-T'
+
+filetype plugin indent on     " required!
+
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
@@ -32,7 +55,7 @@ if has("vms")
 else
   set backup		" keep a backup file
 endif
-set history=50		" keep 50 lines of command line history
+set history=300		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
@@ -51,6 +74,21 @@ inoremap <C-U> <C-G>u<C-U>
 if has('mouse')
   set mouse=a
 endif
+
+" Customize colors
+colorscheme xterm16
+
+if &term =~ "xterm-256color"
+  " use an orange cursor in insert mode
+  let &t_SI = "\<Esc>]12;orange\x7"
+  " use a red cursor otherwise
+  let &t_EI = "\<Esc>]12;blue\x7"
+  silent !echo -ne "\033]12;blue\007"
+  " reset cursor when vim exits
+  autocmd VimLeave * silent !echo -ne "\033]12;black\007"
+endif
+
+set tags=~/.vim/stdtags,tags,.tags,../tags
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -85,6 +123,8 @@ if has("autocmd")
     \   exe "normal! g`\"" |
     \ endif
 
+  autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
   augroup END
 
 else
@@ -92,6 +132,31 @@ else
   set autoindent		" always set autoindenting on
 
 endif " has("autocmd")
+
+"Cscope
+if has ("cscope")
+    set csprg=/usr/bin/cscope
+    set csto=0
+    set cst
+    set nocsverb
+    if filereadable("cscope.out")
+        cs add cscope.out
+    elseif $CSCOPEDB != ""
+        cs add $CSCOPE_DB
+    endif
+    set csverb
+endif
+
+"Cscope bindings
+nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-_>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
@@ -108,4 +173,7 @@ endif
 au BufEnter *.hs compiler ghc
 "configure browser for haskell_doc.vim
 let g:haddock_browser = "/usr/bin/google-chrome"
-
+"update tags file in current directory
+map <C-L> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
+"Call NERDTree window
+map <Leader>n :NERDTreeToggle<CR>
