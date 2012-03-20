@@ -31,6 +31,9 @@ Bundle 'Lokaltog/vim-easymotion'
 Bundle 'mileszs/ack.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'geetarista/ego.vim'
+Bundle 'jimenezrick/vimerl.git'
+Bundle 'scrooloose/syntastic'
+Bundle 'scrooloose/nerdcommenter'
 
 Bundle 'L9'
 Bundle 'FuzzyFinder'
@@ -38,6 +41,13 @@ Bundle 'xoria256.vim'
 Bundle 'guicolorscheme.vim'
 Bundle 'desert256.vim'
 Bundle 'xterm16.vim'
+Bundle 'Gundo'
+Bundle 'SuperTab'
+Bundle 'ZoomWin'
+
+" This bundle for working with columns of numbers and dates. I don't need it.
+" Bundle 'VisIncr' 
+" Bundle 'viewdoc'
 " Bundle 'Command-T'
 
 filetype plugin indent on     " required!
@@ -45,10 +55,14 @@ filetype plugin indent on     " required!
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set smarttab
 set expandtab
+
+" No temp and backup files on disk
+set noswapfile
+set nobackup 
 
 if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
@@ -59,6 +73,14 @@ set history=300		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
+set ignorecase  
+
+" Always show statusline
+set laststatus=2
+" Statusline format
+set statusline=%F%m%r%h%w\ [EOL=%{&ff}]\ [TYPE=%Y]\ [ORD=\%03.3b\ 0x\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L] 
+"Always show tabs
+set showtabline=2 
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
@@ -76,7 +98,7 @@ if has('mouse')
 endif
 
 " Customize colors
-colorscheme xterm16
+colorscheme desert256
 
 if &term =~ "xterm-256color"
   " use an orange cursor in insert mode
@@ -88,7 +110,7 @@ if &term =~ "xterm-256color"
   autocmd VimLeave * silent !echo -ne "\033]12;black\007"
 endif
 
-set tags=~/.vim/stdtags,tags,.tags,../tags
+set tags=tags,.tags,../tags
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
