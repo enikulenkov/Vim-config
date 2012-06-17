@@ -34,6 +34,10 @@ Bundle 'geetarista/ego.vim'
 Bundle 'jimenezrick/vimerl.git'
 Bundle 'scrooloose/syntastic'
 Bundle 'scrooloose/nerdcommenter'
+Bundle 'tpope/vim-unimpaired'
+Bundle 'godlygeek/tabular'
+Bundle 'tpope/vim-surround'
+Bundle 'majutsushi/tagbar'
 
 Bundle 'L9'
 Bundle 'FuzzyFinder'
@@ -60,10 +64,6 @@ set shiftwidth=2
 set smarttab
 set expandtab
 
-" No temp and backup files on disk
-set noswapfile
-set nobackup 
-
 if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
 else
@@ -74,6 +74,9 @@ set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
 set ignorecase  
+" No temp and backup files on disk
+set noswapfile
+set nobackup 
 
 " Always show statusline
 set laststatus=2
@@ -188,10 +191,8 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
-" !!!! My additions !!!
 " Want to use <LocalReader> symbol for mappings
 " let maplocalleader = "_"
-" :map _h :echo "Hello world."<CR>
 au BufEnter *.hs compiler ghc
 "configure browser for haskell_doc.vim
 let g:haddock_browser = "/usr/bin/google-chrome"
@@ -199,3 +200,7 @@ let g:haddock_browser = "/usr/bin/google-chrome"
 map <C-L> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
 "Call NERDTree window
 map <Leader>n :NERDTreeToggle<CR>
+"Search for files and buffers
+map <C-f>f :FufFile<CR>
+map <C-f>c :FufCoverageFile<CR>
+map <C-f>b :FufBuffer<CR>
