@@ -1,4 +1,3 @@
-
 " An example for a vimrc file.
 "
 " Maintainer:	Bram Moolenaar <Bram@vim.org>
@@ -18,10 +17,13 @@ endif
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
+source $VIMRUNTIME/mswin.vim
+behave mswin
+
 " Vundle configuration
 filetype off  " required!
 
-set rtp+=~/.vim/vundle.git/ 
+set rtp+=~/vimfiles/bundle/vundle
 call vundle#rc()
 
 Bundle 'gmarik/vundle'
