@@ -21,36 +21,36 @@ set nocompatible
 " Vundle configuration
 filetype off  " required!
 
-set rtp+=~/.vim/vundle.git/ 
+set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 
-Bundle 'gmarik/vundle'
-Bundle 'tpope/vim-fugitive'
-Bundle 'msanders/snipmate.vim'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'mileszs/ack.vim'
-Bundle 'scrooloose/nerdtree'
-Bundle 'geetarista/ego.vim'
-Bundle 'jimenezrick/vimerl.git'
-Bundle 'scrooloose/syntastic'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'godlygeek/tabular'
-Bundle 'tpope/vim-surround'
-Bundle 'majutsushi/tagbar'
+Plugin 'gmarik/vundle'
+"Plugin 'tpope/vim-fugitive'
+"Plugin 'msanders/snipmate.vim'
+"Plugin 'Lokaltog/vim-easymotion'
+Plugin 'mileszs/ack.vim'
+Plugin 'scrooloose/nerdtree'
+"Plugin 'geetarista/ego.vim'
+"Plugin 'jimenezrick/vimerl.git'
+Plugin 'scrooloose/nerdcommenter'
+"Plugin 'tpope/vim-unimpaired'
+"Plugin 'godlygeek/tabular'
+"Plugin 'tpope/vim-surround'
+Plugin 'majutsushi/tagbar'
+Plugin 'Valloric/YouCompleteMe'
 
-Bundle 'L9'
-Bundle 'FuzzyFinder'
-Bundle 'xoria256.vim'
-Bundle 'guicolorscheme.vim'
-Bundle 'desert256.vim'
-Bundle 'xterm16.vim'
-Bundle 'Gundo'
-Bundle 'SuperTab'
-Bundle 'ZoomWin'
+Plugin 'L9'
+Plugin 'FuzzyFinder'
+Plugin 'xoria256.vim'
+Plugin 'guicolorscheme.vim'
+Plugin 'desert256.vim'
+Plugin 'xterm16.vim'
+"Plugin 'Gundo'
+"Plugin 'SuperTab'
+"Plugin 'ZoomWin'
 
 " This bundle for working with columns of numbers and dates. I don't need it.
-" Bundle 'VisIncr' 
+" Bundle 'VisIncr'
 " Bundle 'viewdoc'
 " Bundle 'Command-T'
 
@@ -73,17 +73,19 @@ set history=300		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
-set ignorecase  
+set ignorecase
 " No temp and backup files on disk
 set noswapfile
-set nobackup 
+set nobackup
+" Set default buffer to OS primary buffer
+set clipboard=unnamedplus
 
 " Always show statusline
 set laststatus=2
 " Statusline format
 set statusline=%F%m%r%h%w\ [EOL=%{&ff}]\ [TYPE=%Y]\ [ORD=\%03.3b\ 0x\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L] 
 "Always show tabs
-set showtabline=2 
+set showtabline=2
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
@@ -103,7 +105,7 @@ endif
 " Customize colors
 colorscheme desert256
 
-if &term =~ "xterm-256color"
+if &term =~ "xterm*"
   " use an orange cursor in insert mode
   let &t_SI = "\<Esc>]12;orange\x7"
   " use a red cursor otherwise
@@ -191,16 +193,43 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
+function! RenameTestFunctions(test_name)
+	execute ',$s/'. a:test_name . '_\(\_d\+\)/\="' . a:test_name .'_" . (submatch(1)+1)/'
+endfunction
+
 " Want to use <LocalReader> symbol for mappings
 " let maplocalleader = "_"
 au BufEnter *.hs compiler ghc
 "configure browser for haskell_doc.vim
 let g:haddock_browser = "/usr/bin/google-chrome"
 "update tags file in current directory
-map <C-L> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
+"map <C-L> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
 "Call NERDTree window
 map <Leader>n :NERDTreeToggle<CR>
 "Search for files and buffers
 map <C-f>f :FufFile<CR>
 map <C-f>c :FufCoverageFile<CR>
 map <C-f>b :FufBuffer<CR>
+
+function! ChangeSpacesMatching(new_pat)
+  call matchdelete(w:m_unwanted_spaces)
+  let w:m_unwanted_spaces=matchadd('ExtraWhitespace', a:new_pat)
+endfunction
+
+function! ShowUnwantedSpaces()
+  highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+  let w:m_unwanted_spaces=matchadd('ExtraWhitespace','\s\+$')
+  autocmd BufWinEnter * let w:m_unwanted_spaces=matchadd('ExtraWhitespace','\s\+$')
+  autocmd InsertEnter * call ChangeSpacesMatching('\s\+\%#\@<!$')
+  autocmd InsertLeave * call ChangeSpacesMatching('\s\+$')
+  autocmd BufWinLeave * call clearmatches()
+endfunction
+
+function! HideUnwantedSpaces()
+  call matchdelete(w:m_unwanted_spaces)
+  autocmd! BufWinEnter * let w:m_unwanted_spaces=matchadd('ExtraWhitespace','\s\+$')
+  autocmd! InsertEnter * call ChangeSpacesMatching('\s\+\%#\@<!$')
+  autocmd! InsertLeave * call ChangeSpacesMatching('\s\+$')
+  autocmd! BufWinLeave * call clearmatches()
+  highlight clear ExtraWhitespace
+endfunction
