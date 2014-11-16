@@ -233,3 +233,30 @@ function! HideUnwantedSpaces()
   autocmd! BufWinLeave * call clearmatches()
   highlight clear ExtraWhitespace
 endfunction
+
+function! DoHighlightLL()
+  if exists("g:line_max_length")
+    if exists("w:m_hl_ll")
+      call matchdelete(w:m_hl_ll)
+    endif
+    let w:m_hl_ll=matchadd('ErrorMsg', '\%>'. g:line_max_length . 'v.\+', -1)
+  endif
+endfunction
+
+function! HighlightLongLines(max_length)
+  call ShadowLongLines()
+  let g:line_max_length = a:max_length
+  call DoHighlightLL()
+  autocmd BufWinEnter * call DoHighlightLL()
+  autocmd BufWinLeave * call clearmatches()
+endfunction
+
+function! ShadowLongLines()
+  if exists("w:m_hl_ll")
+    call matchdelete(w:m_hl_ll)
+    unlet w:m_hl_ll
+    autocmd! BufWinEnter * call DoHighlightLL()
+    autocmd! BufWinLeave * call clearmatches()
+  endif
+  unlet! g:line_max_length
+endfunction
