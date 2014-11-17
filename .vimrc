@@ -21,10 +21,10 @@ set nocompatible
 " Vundle configuration
 filetype off  " required!
 
-set rtp+=~/.vim/bundle/vundle
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
 
-Plugin 'gmarik/vundle'
+Plugin 'gmarik/Vundle.vim'
 "Plugin 'tpope/vim-fugitive'
 "Plugin 'msanders/snipmate.vim'
 "Plugin 'Lokaltog/vim-easymotion'
