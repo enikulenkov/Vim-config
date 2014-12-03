@@ -212,25 +212,25 @@ map <C-f>c :FufCoverageFile<CR>
 map <C-f>b :FufBuffer<CR>
 
 function! ChangeSpacesMatching(new_pat)
-  call matchdelete(w:m_unwanted_spaces)
+  if exists("w:m_unwanted_spaces")
+    call matchdelete(w:m_unwanted_spaces)
+  endif
   let w:m_unwanted_spaces=matchadd('ExtraWhitespace', a:new_pat)
 endfunction
 
 function! ShowUnwantedSpaces()
   highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
   let w:m_unwanted_spaces=matchadd('ExtraWhitespace','\s\+$')
-  autocmd BufWinEnter * let w:m_unwanted_spaces=matchadd('ExtraWhitespace','\s\+$')
+  autocmd WinEnter    * call ChangeSpacesMatching('\s\+$')
   autocmd InsertEnter * call ChangeSpacesMatching('\s\+\%#\@<!$')
   autocmd InsertLeave * call ChangeSpacesMatching('\s\+$')
-  autocmd BufWinLeave * call clearmatches()
 endfunction
 
 function! HideUnwantedSpaces()
   call matchdelete(w:m_unwanted_spaces)
-  autocmd! BufWinEnter * let w:m_unwanted_spaces=matchadd('ExtraWhitespace','\s\+$')
+  autocmd! WinEnter    * call ChangeSpacesMatching('\s\+$')
   autocmd! InsertEnter * call ChangeSpacesMatching('\s\+\%#\@<!$')
   autocmd! InsertLeave * call ChangeSpacesMatching('\s\+$')
-  autocmd! BufWinLeave * call clearmatches()
   highlight clear ExtraWhitespace
 endfunction
 
@@ -247,16 +247,14 @@ function! HighlightLongLines(max_length)
   call ShadowLongLines()
   let g:line_max_length = a:max_length
   call DoHighlightLL()
-  autocmd BufWinEnter * call DoHighlightLL()
-  autocmd BufWinLeave * call clearmatches()
+  autocmd WinEnter * call DoHighlightLL()
 endfunction
 
 function! ShadowLongLines()
   if exists("w:m_hl_ll")
     call matchdelete(w:m_hl_ll)
     unlet w:m_hl_ll
-    autocmd! BufWinEnter * call DoHighlightLL()
-    autocmd! BufWinLeave * call clearmatches()
+    autocmd! WinEnter * call DoHighlightLL()
   endif
   unlet! g:line_max_length
 endfunction
