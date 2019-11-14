@@ -67,6 +67,7 @@ set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
 set ignorecase
+set smartcase
 " No temp and backup files on disk
 set noswapfile
 set nobackup
