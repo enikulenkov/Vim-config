@@ -25,19 +25,14 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
 
 Plugin 'gmarik/Vundle.vim'
-"Plugin 'tpope/vim-fugitive'
-"Plugin 'msanders/snipmate.vim'
+Plugin 'tpope/vim-fugitive'
 "Plugin 'Lokaltog/vim-easymotion'
-Plugin 'mileszs/ack.vim'
 Plugin 'scrooloose/nerdtree'
-"Plugin 'geetarista/ego.vim'
-"Plugin 'jimenezrick/vimerl.git'
 Plugin 'scrooloose/nerdcommenter'
-"Plugin 'tpope/vim-unimpaired'
 "Plugin 'godlygeek/tabular'
 "Plugin 'tpope/vim-surround'
-Plugin 'majutsushi/tagbar'
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'majutsushi/tagbar'
+"Plugin 'Valloric/YouCompleteMe'
 
 Plugin 'L9'
 Plugin 'FuzzyFinder'
@@ -45,8 +40,6 @@ Plugin 'xoria256.vim'
 Plugin 'guicolorscheme.vim'
 Plugin 'desert256.vim'
 Plugin 'xterm16.vim'
-"Plugin 'Gundo'
-"Plugin 'SuperTab'
 "Plugin 'ZoomWin'
 
 " This bundle for working with columns of numbers and dates. I don't need it.
