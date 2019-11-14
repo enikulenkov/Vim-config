@@ -41,11 +41,6 @@ Plugin 'desert256.vim'
 Plugin 'xterm16.vim'
 "Plugin 'ZoomWin'
 
-" This bundle for working with columns of numbers and dates. I don't need it.
-" Bundle 'VisIncr'
-" Bundle 'viewdoc'
-" Bundle 'Command-T'
-
 filetype plugin indent on     " required!
 
 " allow backspacing over everything in insert mode
