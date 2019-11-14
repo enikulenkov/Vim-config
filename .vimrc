@@ -187,19 +187,9 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
-function! RenameTestFunctions(test_name)
-	execute ',$s/'. a:test_name . '_\(\_d\+\)/\="' . a:test_name .'_" . (submatch(1)+1)/'
-endfunction
-
-" Want to use <LocalReader> symbol for mappings
-" let maplocalleader = "_"
-au BufEnter *.hs compiler ghc
-"configure browser for haskell_doc.vim
-let g:haddock_browser = "/usr/bin/google-chrome"
-"update tags file in current directory
-"map <C-L> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
 "Call NERDTree window
 map <Leader>n :NERDTreeToggle<CR>
+
 "Search for files and buffers
 map <C-f>f :FufFile<CR>
 map <C-f>c :FufCoverageFile<CR>
