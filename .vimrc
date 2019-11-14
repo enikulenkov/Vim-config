@@ -91,10 +91,10 @@ map Q gq
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
 
-" In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-  set mouse=a
-endif
+" Do not set mouse, it breaks copying from terminal
+" if has('mouse')
+"   set mouse=a
+" endif
 
 " Customize colors
 colorscheme desert256
