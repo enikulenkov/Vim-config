@@ -34,8 +34,7 @@ Plugin 'scrooloose/nerdcommenter'
 "Plugin 'majutsushi/tagbar'
 "Plugin 'Valloric/YouCompleteMe'
 
-Plugin 'L9'
-Plugin 'FuzzyFinder'
+Plugin 'junegunn/fzf.vim'
 Plugin 'xoria256.vim'
 Plugin 'guicolorscheme.vim'
 Plugin 'desert256.vim'
@@ -191,9 +190,28 @@ endif
 map <Leader>n :NERDTreeToggle<CR>
 
 "Search for files and buffers
-map <C-f>f :FufFile<CR>
-map <C-f>c :FufCoverageFile<CR>
-map <C-f>b :FufBuffer<CR>
+let g:fzf_command_prefix = 'Fzf'
+map <C-f>f :FzfLines<CR>
+map <C-f>c :FzfFiles<CR>
+map <C-f>b :FzfBuffers<CR>
+
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+"Grep functionality
+map <C-f>r :FzfRg<CR>
 
 function! ChangeSpacesMatching(new_pat)
   if exists("w:m_unwanted_spaces")
