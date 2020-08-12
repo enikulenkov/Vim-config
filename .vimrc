@@ -34,6 +34,7 @@ Plugin 'scrooloose/nerdcommenter'
 "Plugin 'majutsushi/tagbar'
 "Plugin 'Valloric/YouCompleteMe'
 
+Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'xoria256.vim'
 Plugin 'guicolorscheme.vim'
